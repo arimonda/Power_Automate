@@ -2,11 +2,11 @@
 
 ## 📚 Hands-On Practice Files
 
-Welcome to the learning tutorials! These files follow the **LEARNING_MODULE.md** curriculum.
+Welcome to the learning tutorials! These files follow the **[LEARNING_MODULE](../docs/guides/LEARNING_MODULE.md)** curriculum.
 
 ## Getting Started
 
-1. Read `LEARNING_MODULE.md` for the complete learning path
+1. Read [`docs/guides/LEARNING_MODULE.md`](../docs/guides/LEARNING_MODULE.md) for the complete learning path
 2. Run tutorials in order (lesson_1_1.py, lesson_1_2.py, etc.)
 3. Complete exercises after each lesson
 4. Check solutions if you get stuck
@@ -73,9 +73,9 @@ Mark your progress:
 
 ## Need Help?
 
-- Read `USER_MANUAL.md` for detailed explanations
-- Check `LEARNING_MODULE.md` for theory
+- Read [`docs/guides/USER_MANUAL.md`](../docs/guides/USER_MANUAL.md) for detailed explanations
+- Check [`docs/guides/LEARNING_MODULE.md`](../docs/guides/LEARNING_MODULE.md) for theory
 - Look at `examples/` for more code samples
-- Review `docs/` for API reference
+- Review [`docs/reference/`](../docs/reference/) for API reference
 
 Happy Learning! 🎓

@@ -40,6 +40,7 @@ class PADFramework:
         self.test_runner = TestRunner(self.config, self.logger)
         self.performance_monitor = PerformanceMonitor(self.config, self.logger)
         self.integration_manager = IntegrationManager(self.config, self.logger)
+        self.integration_manager.set_framework(self)
         
         self.logger.info("PAD Framework initialized successfully")
         

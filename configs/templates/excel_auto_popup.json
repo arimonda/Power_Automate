@@ -1,0 +1,162 @@
+{
+  "name": "ExcelAutoPopupTemplate",
+  "description": "Template: Open an Excel file that auto-launches a VBA popup on Workbook_Open, fill fields, and submit.",
+  "version": "1.0",
+  "enabled": true,
+  "variables": {
+    "input": {
+      "file_path": {
+        "type": "string",
+        "default": "",
+        "description": "Full path to the .xlsm file with auto-launch macro"
+      },
+      "popup_title": {
+        "type": "string",
+        "default": "",
+        "description": "Window title of the auto-launched popup"
+      }
+    },
+    "output": {
+      "status": {
+        "type": "string",
+        "description": "success or failed"
+      }
+    }
+  },
+  "actions": [
+    {
+      "id": "launch_excel",
+      "type": "Excel.LaunchExcel",
+      "parameters": {
+        "instance_name": "%ExcelInstance%",
+        "visible": true,
+        "display_alerts": false
+      }
+    },
+    {
+      "id": "open_workbook",
+      "type": "Excel.OpenDocument",
+      "parameters": {
+        "instance": "%ExcelInstance%",
+        "file_path": "%file_path%",
+        "open_as_readonly": false
+      }
+    },
+    {
+      "id": "wait_for_security_bar",
+      "type": "UIAutomation.WaitForWindow",
+      "parameters": {
+        "window_title": "Microsoft Excel",
+        "process_name": "EXCEL.EXE",
+        "timeout": 10,
+        "on_timeout": "continue"
+      }
+    },
+    {
+      "id": "find_enable_content_btn",
+      "type": "UIAutomation.GetElement",
+      "parameters": {
+        "window": "%ExcelWindow%",
+        "element_name": "Enable Content",
+        "element_type": "Button",
+        "on_not_found": "continue",
+        "output_variable": "%EnableContentBtn%"
+      }
+    },
+    {
+      "id": "if_security_bar_present",
+      "type": "Conditionals.If",
+      "parameters": {
+        "condition": "%EnableContentBtn% IS NOT EMPTY"
+      }
+    },
+    {
+      "id": "click_enable_content",
+      "type": "UIAutomation.Click",
+      "parameters": {
+        "element": "%EnableContentBtn%",
+        "click_type": "left_click"
+      }
+    },
+    {
+      "id": "end_if_security",
+      "type": "Conditionals.EndIf",
+      "parameters": {}
+    },
+    {
+      "id": "wait_for_auto_popup",
+      "type": "UIAutomation.WaitForWindow",
+      "parameters": {
+        "window_title": "%popup_title%",
+        "process_name": "EXCEL.EXE",
+        "timeout": 30,
+        "output_variable": "%PopupWindow%"
+      }
+    },
+    {
+      "id": "focus_popup",
+      "type": "UIAutomation.FocusWindow",
+      "parameters": {
+        "window": "%PopupWindow%"
+      }
+    },
+    {
+      "id": "fill_field_placeholder",
+      "type": "UIAutomation.PopulateTextField",
+      "parameters": {
+        "window": "%PopupWindow%",
+        "element_name": "REPLACE_WITH_FIELD_NAME",
+        "text": "REPLACE_WITH_VALUE",
+        "clear_before": true
+      }
+    },
+    {
+      "id": "click_submit",
+      "type": "UIAutomation.Click",
+      "parameters": {
+        "window": "%PopupWindow%",
+        "element_name": "OK",
+        "element_type": "Button",
+        "click_type": "left_click"
+      }
+    },
+    {
+      "id": "wait_popup_close",
+      "type": "Flow.Wait",
+      "parameters": {
+        "duration": 1
+      }
+    },
+    {
+      "id": "close_excel",
+      "type": "Excel.CloseExcel",
+      "parameters": {
+        "instance": "%ExcelInstance%",
+        "save_before_close": false
+      }
+    },
+    {
+      "id": "set_status_success",
+      "type": "Variables.SetVariable",
+      "parameters": {
+        "variable": "status",
+        "value": "success"
+      }
+    }
+  ],
+  "error_handling": {
+    "on_error": "stop",
+    "retry_count": 1,
+    "retry_delay": 3
+  },
+  "settings": {
+    "timeout": 300,
+    "priority": 5,
+    "run_mode": "attended"
+  },
+  "metadata": {
+    "created_by": "PAD Framework",
+    "created_at": "2026-02-17T00:00:00",
+    "tags": ["excel", "auto-popup", "workbook-open", "template"]
+  }
+}

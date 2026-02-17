@@ -1,0 +1,215 @@
+{
+  "name": "ExcelMultiPopupTemplate",
+  "description": "Template: Open an Excel file, run a macro that triggers multiple sequential popups, fill and submit each one.",
+  "version": "1.0",
+  "enabled": true,
+  "variables": {
+    "input": {
+      "file_path": {
+        "type": "string",
+        "default": "",
+        "description": "Full path to the Excel file"
+      },
+      "macro_name": {
+        "type": "string",
+        "default": "",
+        "description": "VBA macro to execute"
+      }
+    },
+    "output": {
+      "status": {
+        "type": "string",
+        "description": "success or failed"
+      },
+      "popups_handled": {
+        "type": "number",
+        "description": "Number of popups handled"
+      }
+    }
+  },
+  "actions": [
+    {
+      "id": "launch_excel",
+      "type": "Excel.LaunchExcel",
+      "parameters": {
+        "instance_name": "%ExcelInstance%",
+        "visible": true,
+        "display_alerts": false
+      }
+    },
+    {
+      "id": "open_workbook",
+      "type": "Excel.OpenDocument",
+      "parameters": {
+        "instance": "%ExcelInstance%",
+        "file_path": "%file_path%",
+        "open_as_readonly": false
+      }
+    },
+    {
+      "id": "enable_macros_wait",
+      "type": "UIAutomation.WaitForWindow",
+      "parameters": {
+        "window_title": "Microsoft Excel",
+        "process_name": "EXCEL.EXE",
+        "timeout": 10,
+        "on_timeout": "continue"
+      }
+    },
+    {
+      "id": "find_enable_content",
+      "type": "UIAutomation.GetElement",
+      "parameters": {
+        "window": "%ExcelWindow%",
+        "element_name": "Enable Content",
+        "element_type": "Button",
+        "on_not_found": "continue",
+        "output_variable": "%EnableContentBtn%"
+      }
+    },
+    {
+      "id": "if_security_bar",
+      "type": "Conditionals.If",
+      "parameters": { "condition": "%EnableContentBtn% IS NOT EMPTY" }
+    },
+    {
+      "id": "click_enable",
+      "type": "UIAutomation.Click",
+      "parameters": { "element": "%EnableContentBtn%", "click_type": "left_click" }
+    },
+    {
+      "id": "end_if_security",
+      "type": "Conditionals.EndIf",
+      "parameters": {}
+    },
+    {
+      "id": "wait_init",
+      "type": "Flow.Wait",
+      "parameters": { "duration": 2 }
+    },
+    {
+      "id": "run_macro",
+      "type": "Excel.RunMacro",
+      "parameters": {
+        "instance": "%ExcelInstance%",
+        "macro_name": "%macro_name%"
+      }
+    },
+
+    {
+      "id": "popup1_wait",
+      "type": "UIAutomation.WaitForWindow",
+      "parameters": {
+        "window_title": "REPLACE_POPUP_1_TITLE",
+        "process_name": "EXCEL.EXE",
+        "timeout": 30,
+        "output_variable": "%Popup1%"
+      }
+    },
+    {
+      "id": "popup1_focus",
+      "type": "UIAutomation.FocusWindow",
+      "parameters": { "window": "%Popup1%" }
+    },
+    {
+      "id": "popup1_fill",
+      "type": "UIAutomation.PopulateTextField",
+      "parameters": {
+        "window": "%Popup1%",
+        "element_name": "REPLACE_FIELD_1",
+        "text": "REPLACE_VALUE_1",
+        "clear_before": true
+      }
+    },
+    {
+      "id": "popup1_submit",
+      "type": "UIAutomation.Click",
+      "parameters": {
+        "window": "%Popup1%",
+        "element_name": "OK",
+        "element_type": "Button",
+        "click_type": "left_click"
+      }
+    },
+    {
+      "id": "popup1_close_wait",
+      "type": "Flow.Wait",
+      "parameters": { "duration": 1 }
+    },
+
+    {
+      "id": "popup2_wait",
+      "type": "UIAutomation.WaitForWindow",
+      "parameters": {
+        "window_title": "REPLACE_POPUP_2_TITLE",
+        "process_name": "EXCEL.EXE",
+        "timeout": 30,
+        "output_variable": "%Popup2%"
+      }
+    },
+    {
+      "id": "popup2_focus",
+      "type": "UIAutomation.FocusWindow",
+      "parameters": { "window": "%Popup2%" }
+    },
+    {
+      "id": "popup2_fill",
+      "type": "UIAutomation.PopulateTextField",
+      "parameters": {
+        "window": "%Popup2%",
+        "element_name": "REPLACE_FIELD_2",
+        "text": "REPLACE_VALUE_2",
+        "clear_before": true
+      }
+    },
+    {
+      "id": "popup2_submit",
+      "type": "UIAutomation.Click",
+      "parameters": {
+        "window": "%Popup2%",
+        "element_name": "Submit",
+        "element_type": "Button",
+        "click_type": "left_click"
+      }
+    },
+    {
+      "id": "popup2_close_wait",
+      "type": "Flow.Wait",
+      "parameters": { "duration": 1 }
+    },
+
+    {
+      "id": "close_excel",
+      "type": "Excel.CloseExcel",
+      "parameters": {
+        "instance": "%ExcelInstance%",
+        "save_before_close": false
+      }
+    },
+    {
+      "id": "set_status",
+      "type": "Variables.SetVariable",
+      "parameters": { "variable": "status", "value": "success" }
+    },
+    {
+      "id": "set_popups_handled",
+      "type": "Variables.SetVariable",
+      "parameters": { "variable": "popups_handled", "value": 2 }
+    }
+  ],
+  "error_handling": {
+    "on_error": "stop",
+    "retry_count": 1,
+    "retry_delay": 3
+  },
+  "settings": {
+    "timeout": 300,
+    "priority": 5,
+    "run_mode": "attended"
+  },
+  "metadata": {
+    "created_by": "PAD Framework",
+    "created_at": "2026-02-17T00:00:00",
+    "tags": ["excel", "macro", "multi-popup", "template"]
+  }
+}

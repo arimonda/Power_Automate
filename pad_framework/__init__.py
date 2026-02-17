@@ -41,6 +41,30 @@ from .reporting import (
     PerformanceReport
 )
 from .monitoring.metrics import MetricsCollector, get_metrics_collector
+from .integrations.excel_popup_handler import (
+    ExcelPopupHandler,
+    ExcelPopupTemplates,
+    PopupDescriptor,
+    PopupField,
+    PADActions
+)
+from .integrations.excel_automation import (
+    ExcelWorkbookActions,
+    ExcelWorksheetActions,
+    ExcelCellActions,
+    ExcelRowColumnActions,
+    ExcelFormatActions,
+    ExcelDataActions,
+    ExcelTableActions,
+    ExcelPivotActions,
+    ExcelChartActions,
+    ExcelPrintActions,
+    ExcelImportExportActions,
+    ExcelProtectionActions,
+    ExcelMacroActions,
+    ExcelErrorRecovery,
+    ExcelFlowBuilder
+)
 
 __version__ = "1.1.0"
 __author__ = "Power Automate Desktop Framework Team"
@@ -92,5 +116,29 @@ __all__ = [
     # Utilities
     "Logger",
     "MetricsCollector",
-    "get_metrics_collector"
+    "get_metrics_collector",
+
+    # Excel Popup Handling
+    "ExcelPopupHandler",
+    "ExcelPopupTemplates",
+    "PopupDescriptor",
+    "PopupField",
+    "PADActions",
+
+    # Excel Automation
+    "ExcelWorkbookActions",
+    "ExcelWorksheetActions",
+    "ExcelCellActions",
+    "ExcelRowColumnActions",
+    "ExcelFormatActions",
+    "ExcelDataActions",
+    "ExcelTableActions",
+    "ExcelPivotActions",
+    "ExcelChartActions",
+    "ExcelPrintActions",
+    "ExcelImportExportActions",
+    "ExcelProtectionActions",
+    "ExcelMacroActions",
+    "ExcelErrorRecovery",
+    "ExcelFlowBuilder"
 ]
