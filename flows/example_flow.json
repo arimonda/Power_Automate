@@ -1,0 +1,71 @@
+{
+  "name": "ExampleFlow",
+  "description": "Example Power Automate Desktop Flow",
+  "version": "1.0",
+  "enabled": true,
+  "variables": {
+    "input": {
+      "inputParam1": {
+        "type": "string",
+        "default": "",
+        "description": "First input parameter"
+      },
+      "inputParam2": {
+        "type": "number",
+        "default": 0,
+        "description": "Second input parameter"
+      }
+    },
+    "output": {
+      "result": {
+        "type": "string",
+        "description": "Flow execution result"
+      },
+      "status": {
+        "type": "string",
+        "description": "Flow status"
+      }
+    }
+  },
+  "actions": [
+    {
+      "id": "action1",
+      "type": "DisplayMessage",
+      "parameters": {
+        "title": "Flow Started",
+        "message": "Example flow is running..."
+      }
+    },
+    {
+      "id": "action2",
+      "type": "SetVariable",
+      "parameters": {
+        "variable": "result",
+        "value": "Flow completed successfully"
+      }
+    },
+    {
+      "id": "action3",
+      "type": "SetVariable",
+      "parameters": {
+        "variable": "status",
+        "value": "success"
+      }
+    }
+  ],
+  "error_handling": {
+    "on_error": "stop",
+    "retry_count": 2,
+    "retry_delay": 5
+  },
+  "settings": {
+    "timeout": 300,
+    "priority": 5,
+    "run_mode": "attended"
+  },
+  "metadata": {
+    "created_by": "PAD Framework",
+    "created_at": "2026-02-11T00:00:00",
+    "tags": ["example", "template"]
+  }
+}
